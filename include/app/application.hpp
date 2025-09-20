@@ -6,6 +6,8 @@
 #include <cstdlib>
 #include <string>
 
+#include <vulkan/vulkan.h>
+
 namespace engine::app
 {
     struct CreateInfo {

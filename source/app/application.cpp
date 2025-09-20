@@ -11,8 +11,7 @@ namespace engine::app
 
     void Application::create(const CreateInfo&) {
         window::CreateInfo windowCreateInfo = {
-            .width = 800,
-            .height = 600,
+            .size = {800, 600},
             .title = "New Window",
             .visibility = window::Visibility::WINDOWED,
             .context = context_,

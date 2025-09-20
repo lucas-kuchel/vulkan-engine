@@ -1,11 +1,12 @@
 #pragma once
 
-#include <window/events.hpp>
+#include <window/event.hpp>
 
+#include <memory>
 #include <queue>
 #include <string>
 
-#include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 
 namespace engine::window
 {
@@ -18,13 +19,10 @@ namespace engine::window
     class Context;
 
     struct CreateInfo {
-        std::size_t width;
-        std::size_t height;
-
+        glm::uvec2 size;
         std::string title;
 
         Visibility visibility;
-
         Context& context;
 
         bool resizable;
@@ -42,51 +40,30 @@ namespace engine::window
         Window& operator=(Window&& other) noexcept = default;
 
         void create(const CreateInfo& createInfo);
-
-        [[nodiscard]] std::queue<Event>& queryEvents() noexcept;
-
-        void setSize(std::size_t width, std::size_t height);
-
-        [[nodiscard]] const std::size_t& getWidth() const noexcept;
-        [[nodiscard]] const std::size_t& getHeight() const noexcept;
-
-        void setPosition(std::size_t x, std::size_t y);
-
-        [[nodiscard]] const std::size_t& getX() const noexcept;
-        [[nodiscard]] const std::size_t& getY() const noexcept;
-
+        void setSize(glm::uvec2 size);
+        void setPosition(glm::uvec2 position);
         void setTitle(const std::string& title);
-
-        [[nodiscard]] const std::string& getTitle() const noexcept;
-
         void setVisibility(Visibility visibility);
 
+        [[nodiscard]] std::queue<Event>& queryEvents() noexcept;
+        [[nodiscard]] const glm::uvec2& getSize() const noexcept;
+        [[nodiscard]] const glm::uvec2& getPosition() const noexcept;
+        [[nodiscard]] const std::string& getTitle() const noexcept;
         [[nodiscard]] const Visibility& getVisibility() const noexcept;
 
     private:
-        std::queue<Event> events_;
+        class Backend;
 
-        std::size_t width_;
-        std::size_t height_;
-        std::size_t x_;
-        std::size_t y_;
+        friend class Backend;
+
+        std::unique_ptr<Backend> backend_;
+
+        glm::uvec2 size_;
+        glm::uvec2 position_;
         std::string title_;
 
         Visibility visibility_;
 
-        GLFWwindow* handle_;
-
-        static void resizeCallback(GLFWwindow* window, int width, int height);
-        static void moveCallback(GLFWwindow* window, int x, int y);
-        static void closeCallback(GLFWwindow* window);
-        static void focusCallback(GLFWwindow* window, int focused);
-        static void iconifyCallback(GLFWwindow* window, int iconified);
-        static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
-        static void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
-        static void mousePositionCallback(GLFWwindow* window, double x, double y);
-        static void mouseScrollCallback(GLFWwindow* window, double x, double y);
-
-        [[nodiscard]] static Key mapKey(int key);
-        [[nodiscard]] static MouseButton mapMouseButton(int button);
+        std::queue<Event> events_;
     };
 }

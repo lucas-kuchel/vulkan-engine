@@ -3,6 +3,8 @@
 #include <format>
 #include <stdexcept>
 
+#include <GLFW/glfw3.h>
+
 namespace engine::window
 {
     Context::Context() {

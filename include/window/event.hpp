@@ -3,6 +3,8 @@
 #include <cstdlib>
 #include <variant>
 
+#include <glm/glm.hpp>
+
 namespace engine::window
 {
     enum class EventType {
@@ -127,13 +129,11 @@ namespace engine::window
     };
 
     struct ResizeEventInfo {
-        std::size_t width;
-        std::size_t height;
+        glm::uvec2 size;
     };
 
     struct MoveEventInfo {
-        std::size_t x;
-        std::size_t y;
+        glm::uvec2 position;
     };
 
     struct KeyPressedEventInfo {
@@ -155,13 +155,11 @@ namespace engine::window
     };
 
     struct MouseScrolledEventInfo {
-        double x;
-        double y;
+        glm::dvec2 offsets;
     };
 
     struct MouseMovedEventInfo {
-        double x;
-        double y;
+        glm::dvec2 position;
     };
 
     using EventInfo = std::variant<
