@@ -3,17 +3,17 @@
 #include <window/context.hpp>
 #include <window/window.hpp>
 
-#include <cstdlib>
+#include <renderer/instance.hpp>
+#include <renderer/surface.hpp>
+
+#include <cstdint>
 #include <string>
 
-#include <vulkan/vulkan.h>
-
-namespace engine::app
-{
+namespace engine::app {
     struct CreateInfo {
-        std::size_t versionMajor;
-        std::size_t versionMinor;
-        std::size_t versionPatch;
+        std::uint32_t versionMajor;
+        std::uint32_t versionMinor;
+        std::uint32_t versionPatch;
 
         std::string name;
     };
@@ -40,5 +40,8 @@ namespace engine::app
 
         window::Context context_;
         window::Window window_;
+
+        renderer::Instance instance_;
+        renderer::Surface surface_;
     };
 }

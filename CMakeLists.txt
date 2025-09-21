@@ -26,3 +26,7 @@ target_include_directories(engine PRIVATE "include")
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_compile_definitions(engine PRIVATE DEBUG_BUILD_TYPE)
 endif()
+
+if(APPLE)
+    target_compile_definitions(engine PRIVATE PLATFORM_APPLE)
+endif()

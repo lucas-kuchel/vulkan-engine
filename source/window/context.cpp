@@ -35,4 +35,12 @@ namespace engine::window
     void Context::awaitEventsTimeout(double timeout) {
         glfwWaitEventsTimeout(timeout);
     }
+
+    bool Context::supportsVulkan() const {
+        return glfwVulkanSupported();
+    }
+
+    const char** Context::getRequiredInstanceExtensions(std::uint32_t* count) const {
+        return glfwGetRequiredInstanceExtensions(count);
+    }
 }

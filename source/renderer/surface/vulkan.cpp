@@ -1,0 +1,26 @@
+#if !defined(PLATFORM_APPLE)
+
+#include <renderer/instance/vulkan.hpp>
+#include <renderer/surface/vulkan.hpp>
+
+#include <window/window.hpp>
+
+namespace engine::renderer {
+    VulkanSurfaceBackend::VulkanSurfaceBackend(const Surface::Backend::CreateInfo& createInfo) : Surface::Backend(createInfo), surface(nullptr) {
+        auto& vulkanInstanceBackend = static_cast<VulkanInstanceBackend&>(createInfo.instance.getBackend());
+
+        if (createInfo.window.createWindowSurface(vulkanInstanceBackend.instance, nullptr, &surface) != VK_SUCCESS) {
+            throw std::runtime_error("failed to create VkSurfaceKHR");
+        }
+    }
+
+    VulkanSurfaceBackend::~VulkanSurfaceBackend() {
+        if (surface) {
+            auto& vulkanInstanceBackend = static_cast<VulkanInstanceBackend&>(createInfo.instance.getBackend());
+
+            vkDestroySurfaceKHR(vulkanInstanceBackend.instance, surface, nullptr);
+        }
+    }
+}
+
+#endif

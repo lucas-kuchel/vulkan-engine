@@ -607,4 +607,8 @@ namespace engine::window
     const Visibility& Window::getVisibility() const noexcept {
         return visibility_;
     }
+
+    VkResult Window::createWindowSurface(VkInstance instance, VkAllocationCallbacks* allocator, VkSurfaceKHR* surface) {
+        return glfwCreateWindowSurface(instance, backend_->window, allocator, surface);
+    }
 }

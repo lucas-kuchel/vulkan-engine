@@ -8,8 +8,9 @@
 
 #include <glm/glm.hpp>
 
-namespace engine::window
-{
+#include <vulkan/vulkan.h>
+
+namespace engine::window {
     enum class Visibility {
         FULLSCREEN,
         WINDOWED,
@@ -18,18 +19,18 @@ namespace engine::window
 
     class Context;
 
-    struct CreateInfo {
-        glm::uvec2 size;
-        std::string title;
-
-        Visibility visibility;
-        Context& context;
-
-        bool resizable;
-    };
-
     class Window {
     public:
+        struct CreateInfo {
+            glm::uvec2 size;
+            std::string title;
+
+            Visibility visibility;
+            Context& context;
+
+            bool resizable;
+        };
+
         Window();
         ~Window();
 
@@ -50,6 +51,8 @@ namespace engine::window
         [[nodiscard]] const glm::uvec2& getPosition() const noexcept;
         [[nodiscard]] const std::string& getTitle() const noexcept;
         [[nodiscard]] const Visibility& getVisibility() const noexcept;
+
+        [[nodiscard]] VkResult createWindowSurface(VkInstance instance, VkAllocationCallbacks* allocator, VkSurfaceKHR* surface);
 
     private:
         class Backend;
