@@ -4,6 +4,8 @@
 
 #include <window/context.hpp>
 
+#include <vector>
+
 namespace engine::renderer {
     VulkanInstanceBackend::VulkanInstanceBackend(const Instance::Backend::CreateInfo& createInfo) : Instance::Backend(createInfo) {
         if (!createInfo.context.supportsVulkan()) {
@@ -33,13 +35,39 @@ namespace engine::renderer {
 
         const char** instanceExtensions = createInfo.context.getRequiredInstanceExtensions(&instanceExtensionCount);
 
+        std::uint32_t instanceLayerCount = 0;
+
+        if (vkEnumerateInstanceLayerProperties(&instanceLayerCount, nullptr) != VK_SUCCESS) {
+            throw std::runtime_error("failed to enumerate Vulkan instance layer properties");
+        }
+
+        std::vector<VkLayerProperties> instanceLayerProperties(instanceLayerCount);
+        std::vector<const char*> instanceLayers;
+
+        if (vkEnumerateInstanceLayerProperties(&instanceLayerCount, instanceLayerProperties.data()) != VK_SUCCESS) {
+            throw std::runtime_error("failed to enumerate Vulkan instance layer properties");
+        }
+
+        for (auto& instanceLayer : instanceLayerProperties) {
+            if (createInfo.requestDebug) {
+                bool isValidationLayer = std::string_view(instanceLayer.layerName) == "VK_LAYER_KHRONOS_validation";
+                bool isApiDumpLayer = std::string_view(instanceLayer.layerName) == "VK_LAYER_LUNARG_api_dump";
+
+                if (isValidationLayer || isApiDumpLayer) {
+                    instanceLayers.push_back(instanceLayer.layerName);
+                }
+            }
+        }
+
+        std::uint32_t layerCount = (std::uint32_t)instanceLayers.size();
+
         VkInstanceCreateInfo instanceCreateInfo = {
             .sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
             .pNext = nullptr,
             .flags = 0,
             .pApplicationInfo = &applicationInfo,
-            .enabledLayerCount = 0,
-            .ppEnabledLayerNames = nullptr,
+            .enabledLayerCount = layerCount,
+            .ppEnabledLayerNames = instanceLayers.data(),
             .enabledExtensionCount = instanceExtensionCount,
             .ppEnabledExtensionNames = instanceExtensions,
         };
