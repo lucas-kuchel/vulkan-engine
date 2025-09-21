@@ -13,6 +13,11 @@ namespace engine::renderer {
         ~VulkanInstanceBackend();
 
         VkInstance instance;
+        VkPhysicalDevice physicalDevice;
+
+        std::int32_t graphicsQueueSelection = -1;
+        std::int32_t computeQueueSelection = -1;
+        std::int32_t transferQueueSelection = -1;
     };
 }
 

@@ -27,7 +27,8 @@ namespace engine::renderer {
             Backend& operator=(const Backend&) = delete;
             Backend& operator=(Backend&&) noexcept = delete;
 
-            CreateInfo createInfo;
+            Instance& instance;
+            window::Window& window;
         };
 
     public:

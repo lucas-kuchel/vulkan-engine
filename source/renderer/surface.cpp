@@ -30,6 +30,7 @@ namespace engine::renderer {
         return *backend_.get();
     }
 
-    Surface::Backend::Backend(const CreateInfo& createInfo) : createInfo(createInfo) {
+    Surface::Backend::Backend(const CreateInfo& createInfo)
+        : instance(createInfo.instance), window(createInfo.window) {
     }
 }

@@ -38,6 +38,16 @@ namespace engine::renderer {
         return *backend_.get();
     }
 
-    Instance::Backend::Backend(const CreateInfo& createInfo) : createInfo(createInfo) {
+    Instance::Backend::Backend(const CreateInfo& createInfo)
+        : context(createInfo.context),
+          applicationName(createInfo.applicationName),
+          applicationVersionMajor(createInfo.applicationVersionMajor),
+          applicationVersionMinor(createInfo.applicationVersionMinor),
+          applicationVersionPatch(createInfo.applicationVersionPatch),
+          engineName(createInfo.engineName),
+          engineVersionMajor(createInfo.applicationVersionMajor),
+          engineVersionMinor(createInfo.applicationVersionMinor),
+          engineVersionPatch(createInfo.applicationVersionPatch),
+          requestDebug(createInfo.requestDebug) {
     }
 }

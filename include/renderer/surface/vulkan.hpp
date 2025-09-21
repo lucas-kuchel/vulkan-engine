@@ -2,6 +2,7 @@
 
 #if !defined(PLATFORM_APPLE)
 
+#include <renderer/instance/vulkan.hpp>
 #include <renderer/surface.hpp>
 
 #include <vulkan/vulkan.h>
@@ -13,6 +14,8 @@ namespace engine::renderer {
         ~VulkanSurfaceBackend();
 
         VkSurfaceKHR surface;
+
+        std::int32_t presentQueueSelection = -1;
     };
 }
 

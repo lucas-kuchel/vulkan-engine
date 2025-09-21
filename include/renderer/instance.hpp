@@ -41,7 +41,21 @@ namespace engine::renderer {
             Backend& operator=(const Backend&) = delete;
             Backend& operator=(Backend&&) noexcept = delete;
 
-            CreateInfo createInfo;
+            window::Context& context;
+
+            std::string applicationName;
+
+            std::uint32_t applicationVersionMajor;
+            std::uint32_t applicationVersionMinor;
+            std::uint32_t applicationVersionPatch;
+
+            std::string engineName;
+
+            std::uint32_t engineVersionMajor;
+            std::uint32_t engineVersionMinor;
+            std::uint32_t engineVersionPatch;
+
+            bool requestDebug;
         };
 
     public:
