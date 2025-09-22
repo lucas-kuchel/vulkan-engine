@@ -4,6 +4,7 @@
 #include <window/window.hpp>
 
 #include <renderer/instance.hpp>
+#include <renderer/queue.hpp>
 #include <renderer/surface.hpp>
 
 #include <cstdint>
@@ -43,5 +44,8 @@ namespace engine::app {
 
         renderer::Instance instance_;
         renderer::Surface surface_;
+
+        renderer::Queue renderQueue_;
+        renderer::Queue presentQueue_;
     };
 }

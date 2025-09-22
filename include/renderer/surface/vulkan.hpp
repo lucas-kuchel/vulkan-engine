@@ -14,8 +14,6 @@ namespace engine::renderer {
         ~VulkanSurfaceBackend();
 
         VkSurfaceKHR surface;
-
-        std::int32_t presentQueueSelection = -1;
     };
 }
 

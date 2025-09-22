@@ -4,6 +4,8 @@
 
 #include <renderer/instance.hpp>
 
+#include <vector>
+
 #include <vulkan/vulkan.h>
 
 namespace engine::renderer {
@@ -15,9 +17,7 @@ namespace engine::renderer {
         VkInstance instance;
         VkPhysicalDevice physicalDevice;
 
-        std::int32_t graphicsQueueSelection = -1;
-        std::int32_t computeQueueSelection = -1;
-        std::int32_t transferQueueSelection = -1;
+        std::vector<VkQueueFamilyProperties> queueFamilies;
     };
 }
 

@@ -109,43 +109,9 @@ namespace engine::renderer {
 
         vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyCount, nullptr);
 
-        std::vector<VkQueueFamilyProperties> queueFamilies(queueFamilyCount);
+        queueFamilies.resize(queueFamilyCount);
 
         vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyCount, queueFamilies.data());
-
-        for (std::uint32_t i = 0; i < queueFamilies.size(); i++) {
-            const auto& queueFamily = queueFamilies[i];
-
-            if ((queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT) && graphicsQueueSelection < 0) {
-                graphicsQueueSelection = i;
-            }
-
-            if ((queueFamily.queueFlags & VK_QUEUE_COMPUTE_BIT) && computeQueueSelection < 0) {
-                if ((queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT) == 0) {
-                    computeQueueSelection = i;
-                }
-                else if (computeQueueSelection < 0) {
-                    computeQueueSelection = i;
-                }
-            }
-
-            if ((queueFamily.queueFlags & VK_QUEUE_TRANSFER_BIT) && transferQueueSelection < 0) {
-                if ((queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT) == 0 && (queueFamily.queueFlags & VK_QUEUE_COMPUTE_BIT) == 0) {
-                    transferQueueSelection = i;
-                }
-                else if (transferQueueSelection < 0) {
-                    transferQueueSelection = i;
-                }
-            }
-        }
-
-        if (computeQueueSelection < 0) {
-            computeQueueSelection = graphicsQueueSelection;
-        }
-
-        if (transferQueueSelection < 0) {
-            transferQueueSelection = graphicsQueueSelection;
-        }
     }
 
     VulkanInstanceBackend::~VulkanInstanceBackend() {
