@@ -11,13 +11,14 @@
 namespace engine::renderer {
     class VulkanInstanceBackend : public Instance::Backend {
     public:
-        VulkanInstanceBackend(const Instance::Backend::CreateInfo& createInfo);
+        VulkanInstanceBackend(const Instance::BackendCreateInfo& createInfo);
         ~VulkanInstanceBackend();
 
         VkInstance instance;
         VkPhysicalDevice physicalDevice;
 
         std::vector<VkQueueFamilyProperties> queueFamilies;
+        std::vector<std::uint32_t> queueFamilyOccupations;
     };
 }
 

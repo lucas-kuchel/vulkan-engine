@@ -9,12 +9,12 @@ namespace engine::renderer {
         : backend_(nullptr) {
     }
 
-    void Queue::create(const CreateInfo& createInfo) {
+    void Queue::create(const QueueCreateInfo& createInfo) {
         if (backend_) {
             throw std::runtime_error("Queue has already been created");
         }
 
-        Backend::CreateInfo backendCreateInfo = {
+        BackendCreateInfo backendCreateInfo = {
             .type = createInfo.type,
             .instance = createInfo.instance,
             .surface = createInfo.surface,
@@ -34,7 +34,7 @@ namespace engine::renderer {
         return *backend_.get();
     }
 
-    Queue::Backend::Backend(const CreateInfo& createInfo)
+    Queue::Backend::Backend(const BackendCreateInfo& createInfo)
         : type(createInfo.type), instance(createInfo.instance), surface(createInfo.surface) {
     }
 }

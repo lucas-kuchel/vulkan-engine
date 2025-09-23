@@ -9,16 +9,37 @@ namespace engine::window {
 namespace engine::renderer {
     class Instance;
 
+    struct SurfaceCreateInfo {
+        Instance& instance;
+        window::Window& window;
+    };
+
     class Surface {
+        class Backend;
+
+    public:
+        Surface();
+        ~Surface();
+
+        Surface(const Surface&) = delete;
+        Surface(Surface&&) noexcept = default;
+
+        Surface& operator=(const Surface&) = delete;
+        Surface& operator=(Surface&&) noexcept = default;
+
+        void create(const SurfaceCreateInfo& createInfo);
+
+        Backend& getBackend();
+
     private:
+        struct BackendCreateInfo {
+            Instance& instance;
+            window::Window& window;
+        };
+
         class Backend {
         public:
-            struct CreateInfo {
-                Instance& instance;
-                window::Window& window;
-            };
-
-            Backend(const CreateInfo& createInfo);
+            Backend(const BackendCreateInfo& createInfo);
             virtual ~Backend() = default;
 
             Backend(const Backend&) = delete;
@@ -30,27 +51,6 @@ namespace engine::renderer {
             Instance& instance;
             window::Window& window;
         };
-
-    public:
-        struct CreateInfo {
-            Instance& instance;
-            window::Window& window;
-        };
-
-        Surface();
-        ~Surface();
-
-        Surface(const Surface&) = delete;
-        Surface(Surface&&) noexcept = default;
-
-        Surface& operator=(const Surface&) = delete;
-        Surface& operator=(Surface&&) noexcept = default;
-
-        void create(const CreateInfo& createInfo);
-
-        Backend& getBackend();
-
-    private:
         std::unique_ptr<Backend> backend_;
 
         friend class MetalSurfaceBackend;

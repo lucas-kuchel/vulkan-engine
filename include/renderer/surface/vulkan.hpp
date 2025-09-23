@@ -10,7 +10,7 @@
 namespace engine::renderer {
     class VulkanSurfaceBackend : public Surface::Backend {
     public:
-        VulkanSurfaceBackend(const Surface::Backend::CreateInfo& createInfo);
+        VulkanSurfaceBackend(const Surface::BackendCreateInfo& createInfo);
         ~VulkanSurfaceBackend();
 
         VkSurfaceKHR surface;

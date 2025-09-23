@@ -15,17 +15,39 @@ namespace engine::renderer {
         RENDER,
     };
 
+    struct QueueCreateInfo {
+        QueueType type;
+        Instance& instance;
+        Surface& surface;
+    };
+
     class Queue {
+        class Backend;
+
+    public:
+        Queue();
+        ~Queue();
+
+        Queue(const Queue&) = delete;
+        Queue(Queue&&) noexcept = default;
+
+        Queue& operator=(const Queue&) = delete;
+        Queue& operator=(Queue&&) noexcept = default;
+
+        void create(const QueueCreateInfo& createInfo);
+
+        Backend& getBackend();
+
     private:
+        struct BackendCreateInfo {
+            QueueType type;
+            Instance& instance;
+            Surface& surface;
+        };
+
         class Backend {
         public:
-            struct CreateInfo {
-                QueueType type;
-                Instance& instance;
-                Surface& surface;
-            };
-
-            Backend(const CreateInfo& createInfo);
+            Backend(const BackendCreateInfo& createInfo);
             virtual ~Backend() = default;
 
             Backend(const Backend&) = delete;
@@ -39,27 +61,6 @@ namespace engine::renderer {
             Surface& surface;
         };
 
-    public:
-        struct CreateInfo {
-            QueueType type;
-            Instance& instance;
-            Surface& surface;
-        };
-
-        Queue();
-        ~Queue();
-
-        Queue(const Queue&) = delete;
-        Queue(Queue&&) noexcept = default;
-
-        Queue& operator=(const Queue&) = delete;
-        Queue& operator=(Queue&&) noexcept = default;
-
-        void create(const CreateInfo& createInfo);
-
-        Backend& getBackend();
-
-    private:
         std::unique_ptr<Backend> backend_;
 
         friend class MetalQueueBackend;

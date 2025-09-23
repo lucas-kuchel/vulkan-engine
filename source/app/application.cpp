@@ -19,7 +19,7 @@ namespace engine::app {
 
         window_.create(windowCreateInfo);
 
-        renderer::Instance::CreateInfo instanceCreateInfo = {
+        renderer::InstanceCreateInfo instanceCreateInfo = {
             .context = context_,
             .applicationName = createInfo.name,
             .applicationVersionMajor = createInfo.versionMajor,
@@ -34,20 +34,20 @@ namespace engine::app {
 
         instance_.create(instanceCreateInfo);
 
-        renderer::Surface::CreateInfo surfaceCreateInfo = {
+        renderer::SurfaceCreateInfo surfaceCreateInfo = {
             .instance = instance_,
             .window = window_,
         };
 
         surface_.create(surfaceCreateInfo);
 
-        renderer::Queue::CreateInfo renderQueueCreateInfo = {
+        renderer::QueueCreateInfo renderQueueCreateInfo = {
             .type = renderer::QueueType::RENDER,
             .instance = instance_,
             .surface = surface_,
         };
 
-        renderer::Queue::CreateInfo presentQueueCreateInfo = {
+        renderer::QueueCreateInfo presentQueueCreateInfo = {
             .type = renderer::QueueType::PRESENT,
             .instance = instance_,
             .surface = surface_,
@@ -55,6 +55,14 @@ namespace engine::app {
 
         renderQueue_.create(renderQueueCreateInfo);
         presentQueue_.create(presentQueueCreateInfo);
+
+        renderer::DeviceCreateInfo deviceCreateInfo = {
+            .instance = instance_,
+            .surface = surface_,
+            .queues = {renderQueue_, presentQueue_},
+        };
+
+        device_.create(deviceCreateInfo);
     }
 
     void Application::update() {

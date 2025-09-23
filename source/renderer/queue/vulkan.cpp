@@ -7,13 +7,17 @@
 #include <renderer/queue/vulkan.hpp>
 #include <renderer/surface/vulkan.hpp>
 
+#include <limits>
+
 namespace engine::renderer {
-    VulkanQueueBackend::VulkanQueueBackend(const Queue::Backend::CreateInfo& createInfo)
+    VulkanQueueBackend::VulkanQueueBackend(const Queue::BackendCreateInfo& createInfo)
         : Queue::Backend(createInfo), queue(VK_NULL_HANDLE), familyIndex(std::numeric_limits<std::uint32_t>::max()), queueIndex(0) {
+
         auto& instanceData = static_cast<VulkanInstanceBackend&>(createInfo.instance.getBackend());
         auto& surfaceData = static_cast<VulkanSurfaceBackend&>(createInfo.surface.getBackend());
 
         auto& queueFamilies = instanceData.queueFamilies;
+        auto& queueFamilyOccupations = instanceData.queueFamilyOccupations;
 
         VkQueueFlagBits queueTypeNeeded = VK_QUEUE_FLAG_BITS_MAX_ENUM;
         bool isPresentType = false;
@@ -45,11 +49,27 @@ namespace engine::renderer {
 
                 if (presentSupported) {
                     familyIndex = i;
+
+                    if (queueFamilyOccupations[i] == family.queueCount) {
+                        queueFamilyOccupations[i] = 0;
+                    }
+
+                    queueIndex = queueFamilyOccupations[i];
+                    queueFamilyOccupations[i]++;
+
                     break;
                 }
             }
             else if (family.queueFlags & queueTypeNeeded) {
                 familyIndex = i;
+
+                if (queueFamilyOccupations[i] == family.queueCount) {
+                    queueFamilyOccupations[i] = 0;
+                }
+
+                queueIndex = queueFamilyOccupations[i];
+                queueFamilyOccupations[i]++;
+
                 break;
             }
         }
@@ -57,8 +77,6 @@ namespace engine::renderer {
         if (familyIndex == std::numeric_limits<std::uint32_t>::max()) {
             throw std::runtime_error("No suitable Vulkan queue family found");
         }
-
-        queueIndex = 0;
     }
 
     VulkanQueueBackend::~VulkanQueueBackend() {

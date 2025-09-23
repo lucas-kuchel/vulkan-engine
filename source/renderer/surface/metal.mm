@@ -1,3 +1,5 @@
+#if defined(PLATFORM_APPLE)
+
 #include <renderer/surface.hpp>
 
 #include <renderer/surface/metal.hpp>
@@ -10,3 +12,5 @@ namespace engine::renderer {
     MetalSurfaceBackend::~MetalSurfaceBackend() {
     }
 }
+
+#endif

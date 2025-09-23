@@ -9,7 +9,7 @@
 namespace engine::renderer {
     class VulkanQueueBackend : public Queue::Backend {
     public:
-        VulkanQueueBackend(const Queue::Backend::CreateInfo& createInfo);
+        VulkanQueueBackend(const Queue::BackendCreateInfo& createInfo);
         ~VulkanQueueBackend();
 
         VkQueue queue;

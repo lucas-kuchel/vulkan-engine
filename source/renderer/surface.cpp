@@ -9,12 +9,12 @@ namespace engine::renderer {
         : backend_(nullptr) {
     }
 
-    void Surface::create(const CreateInfo& createInfo) {
+    void Surface::create(const SurfaceCreateInfo& createInfo) {
         if (backend_) {
             throw std::runtime_error("Surface has already been created");
         }
 
-        Backend::CreateInfo backendCreateInfo = {
+        BackendCreateInfo backendCreateInfo = {
             .instance = createInfo.instance,
             .window = createInfo.window,
         };
@@ -33,7 +33,7 @@ namespace engine::renderer {
         return *backend_.get();
     }
 
-    Surface::Backend::Backend(const CreateInfo& createInfo)
+    Surface::Backend::Backend(const BackendCreateInfo& createInfo)
         : instance(createInfo.instance), window(createInfo.window) {
     }
 }

@@ -7,7 +7,7 @@
 #include <vector>
 
 namespace engine::renderer {
-    VulkanInstanceBackend::VulkanInstanceBackend(const Instance::Backend::CreateInfo& createInfo) : Instance::Backend(createInfo) {
+    VulkanInstanceBackend::VulkanInstanceBackend(const Instance::BackendCreateInfo& createInfo) : Instance::Backend(createInfo) {
         if (!createInfo.context.supportsVulkan()) {
             throw std::runtime_error("system does not support Vulkan");
         }
@@ -110,6 +110,7 @@ namespace engine::renderer {
         vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyCount, nullptr);
 
         queueFamilies.resize(queueFamilyCount);
+        queueFamilyOccupations.resize(queueFamilyCount);
 
         vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyCount, queueFamilies.data());
     }

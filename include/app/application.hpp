@@ -3,6 +3,7 @@
 #include <window/context.hpp>
 #include <window/window.hpp>
 
+#include <renderer/device.hpp>
 #include <renderer/instance.hpp>
 #include <renderer/queue.hpp>
 #include <renderer/surface.hpp>
@@ -44,6 +45,7 @@ namespace engine::app {
 
         renderer::Instance instance_;
         renderer::Surface surface_;
+        renderer::Device device_;
 
         renderer::Queue renderQueue_;
         renderer::Queue presentQueue_;

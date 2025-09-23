@@ -6,7 +6,7 @@
 #include <window/window.hpp>
 
 namespace engine::renderer {
-    VulkanSurfaceBackend::VulkanSurfaceBackend(const Surface::Backend::CreateInfo& createInfo)
+    VulkanSurfaceBackend::VulkanSurfaceBackend(const Surface::BackendCreateInfo& createInfo)
         : Surface::Backend(createInfo), surface(nullptr) {
         auto& vulkanInstanceBackend = static_cast<VulkanInstanceBackend&>(instance.getBackend());
 

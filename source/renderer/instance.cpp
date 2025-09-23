@@ -6,12 +6,12 @@ namespace engine::renderer {
     Instance::Instance() : backend_(nullptr) {
     }
 
-    void Instance::create(const CreateInfo& createInfo) {
+    void Instance::create(const InstanceCreateInfo& createInfo) {
         if (backend_) {
             throw std::runtime_error("Instance has already been created");
         }
 
-        Backend::CreateInfo backendCreateInfo = {
+        BackendCreateInfo backendCreateInfo = {
             .context = createInfo.context,
             .applicationName = createInfo.applicationName,
             .applicationVersionMajor = createInfo.applicationVersionMajor,
@@ -38,7 +38,7 @@ namespace engine::renderer {
         return *backend_.get();
     }
 
-    Instance::Backend::Backend(const CreateInfo& createInfo)
+    Instance::Backend::Backend(const BackendCreateInfo& createInfo)
         : context(createInfo.context),
           applicationName(createInfo.applicationName),
           applicationVersionMajor(createInfo.applicationVersionMajor),
