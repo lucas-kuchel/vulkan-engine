@@ -2,8 +2,11 @@
 #include <renderer/surface/metal.hpp>
 #include <renderer/surface/vulkan.hpp>
 
+#include <stdexcept>
+
 namespace engine::renderer {
-    Surface::Surface() : backend_(nullptr) {
+    Surface::Surface()
+        : backend_(nullptr) {
     }
 
     void Surface::create(const CreateInfo& createInfo) {

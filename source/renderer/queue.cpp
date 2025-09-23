@@ -2,8 +2,11 @@
 #include <renderer/queue/metal.hpp>
 #include <renderer/queue/vulkan.hpp>
 
+#include <stdexcept>
+
 namespace engine::renderer {
-    Queue::Queue() : backend_(nullptr) {
+    Queue::Queue()
+        : backend_(nullptr) {
     }
 
     void Queue::create(const CreateInfo& createInfo) {

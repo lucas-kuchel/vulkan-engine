@@ -6,7 +6,8 @@
 #include <window/window.hpp>
 
 namespace engine::renderer {
-    VulkanSurfaceBackend::VulkanSurfaceBackend(const Surface::Backend::CreateInfo& createInfo) : Surface::Backend(createInfo), surface(nullptr) {
+    VulkanSurfaceBackend::VulkanSurfaceBackend(const Surface::Backend::CreateInfo& createInfo)
+        : Surface::Backend(createInfo), surface(nullptr) {
         auto& vulkanInstanceBackend = static_cast<VulkanInstanceBackend&>(instance.getBackend());
 
         if (window.createWindowSurface(vulkanInstanceBackend.instance, nullptr, &surface) != VK_SUCCESS) {
@@ -17,9 +18,6 @@ namespace engine::renderer {
     VulkanSurfaceBackend::~VulkanSurfaceBackend() {
         if (surface) {
             auto& vulkanInstanceBackend = static_cast<VulkanInstanceBackend&>(instance.getBackend());
-
-            int* a = new int;
-            delete a;
 
             vkDestroySurfaceKHR(vulkanInstanceBackend.instance, surface, nullptr);
         }

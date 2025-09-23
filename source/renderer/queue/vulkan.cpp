@@ -1,11 +1,11 @@
+#if !defined(PLATFORM_APPLE)
+
 #include <renderer/instance.hpp>
 #include <renderer/surface.hpp>
 
 #include <renderer/instance/vulkan.hpp>
 #include <renderer/queue/vulkan.hpp>
 #include <renderer/surface/vulkan.hpp>
-
-#include <limits>
 
 namespace engine::renderer {
     VulkanQueueBackend::VulkanQueueBackend(const Queue::Backend::CreateInfo& createInfo)
@@ -64,3 +64,5 @@ namespace engine::renderer {
     VulkanQueueBackend::~VulkanQueueBackend() {
     }
 }
+
+#endif
