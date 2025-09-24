@@ -2,7 +2,6 @@
 
 #if !defined(PLATFORM_APPLE)
 
-#include <renderer/instance/vulkan.hpp>
 #include <renderer/surface.hpp>
 
 #include <vulkan/vulkan.h>
