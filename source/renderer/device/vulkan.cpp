@@ -50,6 +50,38 @@ namespace engine::renderer {
             queueCreateInfos.push_back(queueCreateInfo);
         }
 
+        std::uint32_t extensionCount = 0;
+
+        if (vkEnumerateDeviceExtensionProperties(vulkanInstanceBackend.physicalDevice, nullptr, &extensionCount, nullptr) != VK_SUCCESS) {
+            throw std::runtime_error("Failed to enumerate device extensions");
+        }
+
+        std::vector<VkExtensionProperties> extensionProperties(extensionCount);
+
+        if (vkEnumerateDeviceExtensionProperties(vulkanInstanceBackend.physicalDevice, nullptr, &extensionCount, extensionProperties.data()) != VK_SUCCESS) {
+            throw std::runtime_error("Failed to enumerate device extensions");
+        }
+
+        std::vector<const char*> extensions;
+
+        bool foundSwapchain = false;
+
+        for (auto& extensionInfo : extensionProperties) {
+            bool match = false;
+
+            match |= std::string_view(extensionInfo.extensionName) == "VK_KHR_swapchain";
+
+            if (match) {
+                foundSwapchain = true;
+                extensions.push_back(extensionInfo.extensionName);
+            }
+        }
+
+        if (!foundSwapchain) {
+            throw std::runtime_error("Vulkan device does not support swapchains");
+        }
+
+        std::uint32_t extensionInfoCount = extensions.size();
         std::uint32_t queueCreateInfoCount = queueCreateInfos.size();
 
         VkDeviceCreateInfo deviceCreateInfo = {
@@ -60,13 +92,13 @@ namespace engine::renderer {
             .pQueueCreateInfos = queueCreateInfos.data(),
             .enabledLayerCount = 0,
             .ppEnabledLayerNames = nullptr,
-            .enabledExtensionCount = 0,
-            .ppEnabledExtensionNames = nullptr,
+            .enabledExtensionCount = extensionInfoCount,
+            .ppEnabledExtensionNames = extensions.data(),
             .pEnabledFeatures = nullptr,
         };
 
         if (vkCreateDevice(vulkanInstanceBackend.physicalDevice, &deviceCreateInfo, nullptr, &device) != VK_SUCCESS) {
-            throw std::runtime_error("Failed to create VkDevice");
+            throw std::runtime_error("Failed to create device");
         }
 
         for (auto& queue : queues) {
