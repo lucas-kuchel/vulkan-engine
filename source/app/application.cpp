@@ -63,6 +63,18 @@ namespace engine::app {
         };
 
         device_.create(deviceCreateInfo);
+
+        renderer::SwapchainCreateInfo swapchainCreateInfo = {
+            .instance = instance_,
+            .surface = surface_,
+            .device = device_,
+            .renderQueue = renderQueue_,
+            .presentQueue = presentQueue_,
+            .imageCount = 3,
+            .synchronise = false,
+        };
+
+        swapchain_.create(swapchainCreateInfo);
     }
 
     void Application::update() {

@@ -15,8 +15,9 @@ namespace engine::renderer {
         }
 
         BackendCreateInfo backendCreateInfo = {
-            .device = createInfo.device,
+            .instance = createInfo.instance,
             .surface = createInfo.surface,
+            .device = createInfo.device,
             .renderQueue = createInfo.renderQueue,
             .presentQueue = createInfo.presentQueue,
             .imageCount = createInfo.imageCount,
@@ -38,7 +39,7 @@ namespace engine::renderer {
     }
 
     Swapchain::Backend::Backend(const BackendCreateInfo& createInfo)
-        : device(createInfo.device), surface(createInfo.surface),
+        : instance(createInfo.instance), surface(createInfo.surface), device(createInfo.device),
           renderQueue(createInfo.renderQueue), presentQueue(createInfo.presentQueue),
           imageCount(createInfo.imageCount), synchronise(createInfo.synchronise) {
     }

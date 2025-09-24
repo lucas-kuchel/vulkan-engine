@@ -11,7 +11,7 @@ namespace engine::renderer {
         auto& vulkanInstanceBackend = static_cast<VulkanInstanceBackend&>(instance.getBackend());
 
         if (window.createWindowSurface(vulkanInstanceBackend.instance, nullptr, &surface) != VK_SUCCESS) {
-            throw std::runtime_error("failed to create VkSurfaceKHR");
+            throw std::runtime_error("failed to create surface");
         }
     }
 

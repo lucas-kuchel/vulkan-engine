@@ -5,8 +5,7 @@
 
 #include <GLFW/glfw3.h>
 
-namespace engine::window
-{
+namespace engine::window {
     Context::Context() {
         if (glfwInit() != GLFW_TRUE) {
             const char* message = nullptr;

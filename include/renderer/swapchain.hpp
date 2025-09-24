@@ -3,13 +3,15 @@
 #include <memory>
 
 namespace engine::renderer {
-    class Swapchain;
+    class Device;
+    class Instance;
     class Surface;
     class Queue;
 
     struct SwapchainCreateInfo {
-        Swapchain& device;
+        Instance& instance;
         Surface& surface;
+        Device& device;
         Queue& renderQueue;
         Queue& presentQueue;
 
@@ -37,8 +39,9 @@ namespace engine::renderer {
 
     private:
         struct BackendCreateInfo {
-            Swapchain& device;
+            Instance& instance;
             Surface& surface;
+            Device& device;
             Queue& renderQueue;
             Queue& presentQueue;
 
@@ -58,8 +61,9 @@ namespace engine::renderer {
             Backend& operator=(const Backend&) = delete;
             Backend& operator=(Backend&&) noexcept = delete;
 
-            Swapchain& device;
+            Instance& instance;
             Surface& surface;
+            Device& device;
             Queue& renderQueue;
             Queue& presentQueue;
 

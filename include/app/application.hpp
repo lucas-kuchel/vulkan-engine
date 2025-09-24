@@ -7,6 +7,7 @@
 #include <renderer/instance.hpp>
 #include <renderer/queue.hpp>
 #include <renderer/surface.hpp>
+#include <renderer/swapchain.hpp>
 
 #include <cstdint>
 #include <string>
@@ -46,6 +47,7 @@ namespace engine::app {
         renderer::Instance instance_;
         renderer::Surface surface_;
         renderer::Device device_;
+        renderer::Swapchain swapchain_;
 
         renderer::Queue renderQueue_;
         renderer::Queue presentQueue_;
