@@ -9,7 +9,7 @@ namespace engine::app {
     }
 
     void Application::create(const CreateInfo& createInfo) {
-        window::Window::CreateInfo windowCreateInfo = {
+        window::WindowCreateInfo windowCreateInfo = {
             .size = {800, 600},
             .title = "New Window",
             .visibility = window::Visibility::WINDOWED,

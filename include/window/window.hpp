@@ -19,18 +19,18 @@ namespace engine::window {
 
     class Context;
 
+    struct WindowCreateInfo {
+        glm::uvec2 size;
+        std::string title;
+
+        Visibility visibility;
+        Context& context;
+
+        bool resizable;
+    };
+
     class Window {
     public:
-        struct CreateInfo {
-            glm::uvec2 size;
-            std::string title;
-
-            Visibility visibility;
-            Context& context;
-
-            bool resizable;
-        };
-
         Window();
         ~Window();
 
@@ -40,7 +40,7 @@ namespace engine::window {
         Window& operator=(const Window& other) = delete;
         Window& operator=(Window&& other) noexcept = default;
 
-        void create(const CreateInfo& createInfo);
+        void create(const WindowCreateInfo& createInfo);
         void setSize(glm::uvec2 size);
         void setPosition(glm::uvec2 position);
         void setTitle(const std::string& title);
@@ -54,10 +54,11 @@ namespace engine::window {
 
         [[nodiscard]] VkResult createWindowSurface(VkInstance instance, VkAllocationCallbacks* allocator, VkSurfaceKHR* surface);
 
+        template <typename T>
+        [[nodiscard]] T* getNativeHandle();
+
     private:
         class Backend;
-
-        friend class Backend;
 
         std::unique_ptr<Backend> backend_;
 
@@ -68,5 +69,7 @@ namespace engine::window {
         Visibility visibility_;
 
         std::queue<Event> events_;
+
+        friend class Backend;
     };
 }

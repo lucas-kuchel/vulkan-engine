@@ -5,8 +5,19 @@
 
 #include <GLFW/glfw3.h>
 
-namespace engine::window
-{
+#if defined(PLATFORM_APPLE)
+
+#define GLFW_EXPOSE_NATIVE_COCOA
+
+#elif defined(PLATFORM_WIN32)
+
+#define GLFW_EXPOSE_NATIVE_WIN32
+
+#endif
+
+#include <GLFW/glfw3native.h>
+
+namespace engine::window {
     class Window::Backend {
     public:
         static Key mapKey(std::int32_t key) {
@@ -458,7 +469,7 @@ namespace engine::window
         : backend_(std::make_unique<Backend>()), size_(0, 0), position_(0, 0), title_(), visibility_(Visibility::WINDOWED) {
     }
 
-    void Window::create(const CreateInfo& createInfo) {
+    void Window::create(const WindowCreateInfo& createInfo) {
         if (backend_->window) {
             throw std::runtime_error("window already created");
         }
@@ -507,7 +518,6 @@ namespace engine::window
         // this allows callbacks to load our window data
         glfwSetWindowUserPointer(backend_->window, this);
 
-        // set all the window callbacks
         glfwSetWindowSizeCallback(backend_->window, Backend::resizeCallback);
         glfwSetWindowPosCallback(backend_->window, Backend::moveCallback);
         glfwSetWindowCloseCallback(backend_->window, Backend::closeCallback);
@@ -611,4 +621,20 @@ namespace engine::window
     VkResult Window::createWindowSurface(VkInstance instance, VkAllocationCallbacks* allocator, VkSurfaceKHR* surface) {
         return glfwCreateWindowSurface(instance, backend_->window, allocator, surface);
     }
+
+#if defined(PLATFORM_APPLE)
+
+    template <>
+    void* Window::getNativeHandle() {
+        return glfwGetCocoaWindow(backend_->window);
+    }
+
+#elif defined(PLATFORM_WIN32)
+
+    template <>
+    HWND* Window::getNativeHandle() {
+        return glfwGetWin32Window(backend_->window);
+    }
+
+#endif
 }

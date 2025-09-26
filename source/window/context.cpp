@@ -8,11 +8,13 @@
 namespace engine::window {
     Context::Context() {
         if (glfwInit() != GLFW_TRUE) {
-            const char* message = nullptr;
+            const char* error = nullptr;
 
-            glfwGetError(&message);
+            glfwGetError(&error);
 
-            throw std::runtime_error(std::format("failed to initialise window subsystem:\n\n{}", message));
+            std::string message = std::format("failed to initialise window subsystem:\n\n{}", error);
+
+            throw std::runtime_error(message);
         }
 
         // stop GLFW from creating windows with OpenGL contexts
